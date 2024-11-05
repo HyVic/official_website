@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// import { log } from 'echarts/types/src/util/log.js';
+
 </script>
 
 <template>

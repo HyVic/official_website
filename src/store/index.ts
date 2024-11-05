@@ -4,6 +4,8 @@ export const useStore = defineStore({
     id: "index",
     state: () => ({
         name: "old name",
+        status: false,
+        status2: false,
     }),
     getters: {
         myName: (state) => {

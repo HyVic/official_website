@@ -5,6 +5,11 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            name: 'LogoPage',
+            component: () => import('../views/LogoPage.vue'),
+        },
+        {
+            path: '/index',
             name: 'IndexPage',
             component: () => import('../views/IndexPage.vue'),
             meta:{keepAlive: true},
@@ -19,28 +24,51 @@ const router = createRouter({
                     component: () => import('../views/HomePage.vue')
                 },
                 {
-                    path: '/search',
-                    name: 'SearchPage',
-                    meta:{title:"搜索"},
-                    component: () => import('../views/SearchPage.vue')
+                    path: '/service',
+                    name: 'ServicePage',
+                    meta:{title:"技术服务"},
+                    component: () => import('../views/ServicePage.vue')
                 },
                 {
-                    path: '/tools',
-                    name: 'ToolsPage',
-                    meta:{title:"工具"},
-                    component: () => import('../views/ToolsPage.vue')
+                    path: '/product',
+                    name: 'ProductPage',
+                    meta:{title:"产品中心"},
+                    redirect: {
+                        name: 'CropPage'
+                    },
+                    component: () => import('../views/ProductPage.vue'),
+                    children:[
+                        {
+                            path: '/product/crop',
+                            name: 'CropPage',
+                            meta:{title:"作物"},
+                            component: () => import('../components/product-page/CropPage.vue')
+                        },
+                        {
+                            path: '/product/animal',
+                            name: 'AnimalPage',
+                            meta:{title:"动物"},
+                            component: () => import('../components/product-page/AnimalPage.vue')
+                        },
+                        {
+                            path: '/product/customized',
+                            name: 'CustomizedPage',
+                            meta:{title:"定制"},
+                            component: () => import('../components/product-page/CustomizedPage.vue')
+                        }
+                    ]
                 },
                 {
-                    path: '/project',
-                    name: 'ProjectPage',
-                    meta:{title:"项目"},
-                    component: () => import('../views/ProjectPage.vue')
+                    path: '/resource',
+                    name: 'ResourcePage',
+                    meta:{title:"客户解答"},
+                    component: () => import('../views/ResourcePage.vue')
                 },
                 {
-                    path: '/help',
-                    name: 'HelpPage',
-                    meta:{title:"帮助"},
-                    component: () => import('../views/HelpPage.vue')
+                    path: '/about',
+                    name: 'AboutView',
+                    meta:{title:"关于我们"},
+                    component: () => import('../views/AboutView.vue')
                 }
 
             ]

@@ -4,7 +4,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import viteCompression from 'vite-plugin-compression'
-
+// import { visualizer } from 'rollup-plugin-visualizer'
+// import viteImagemin from "vite-plugin-imagemin"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -26,11 +27,22 @@ export default defineConfig({
       threshold: 10240, // 压缩前最小文件大小
       algorithm: 'gzip', // 压缩算法
       ext: '.gz' // 文件类型
-    })
+    }),
+    // visualizer(),
+    // viteImagemin() src/assets/JING411.jpg
   ],
   css: {
     devSourcemap: true
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          echarts: ['echarts']
+        }
+      }
+    }
+  }
 /*   server: {
     host: '192.168.3.88',
     port: 8088,

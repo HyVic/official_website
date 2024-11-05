@@ -1,352 +1,500 @@
 <template>
-  <div class="container">
-    <div class="basic-info common-section">
-      <div class="about">
-        <h3>About</h3>
-        <div class="content" id="introduction">
-          {{ introduction }}
-        </div>
+  <carousel :trans-img="transImgs"></carousel>
+  <div class="service">
+    <div class="bg"></div>
+    <div class="content common">
+      <div class="commtitle">
+        <div class="en">Service <img src="../assets/0.png" alt="" /></div>
+        <!-- <div class="cn">技术服务</div> -->
       </div>
-      <div class="right-side">
-        <div class="images" id="images">
-<!--          <div class="image-container">-->
-            <img alt="" v-for="(image,index) in images" :key="index" :src="image">
-<!--          </div>-->
-
+      <div class="service_nav">
+        <div class="nav_item" v-for="item in seviceNav">
+          <div class="icon"><img :src="item.icon" alt="" /></div>
+          <div class="title">{{ item.title }}</div>
+          <div class="cont">{{ item.cont }}</div>
+          <div class="icon_hover">＋</div>
         </div>
       </div>
     </div>
-    <div id="sortSection" class="sort-section common-section">
-      <h3>Sort</h3>
-      <div class="custom-tabs">
-        <div class="single">
-          <div class="custom-tabs-label"><i class="iconfont icon-renkou"></i><span>Human</span></div>
-          <el-tree
-              class="filter-tree"
-              :data="humanTreeData"
-              :props="defaultProps"
-              default-expand-all
-          />
-        </div>
-        <div class="single">
-          <div class="custom-tabs-label"><i class="iconfont icon-shijieyeshengdongwuri"></i><span>Animal models </span></div>
-          <el-tree
-              class="filter-tree"
-              :data="animalTreeData"
-              :props="defaultProps"
-              default-expand-all
-          />
-        </div>
+  </div>
+  <div class="product">
+    <div class="content common">
+      <div class="commtitle">
+        <div class="en">Product <img src="../assets/0.png" alt="" /></div>
       </div>
-<!--      <el-tabs type="border-card" class="demo-tabs">
-        <el-tab-pane>
-          <template #label>
-            <span class="custom-tabs-label">
-              <i class="iconfont icon-renkou"></i>
-              <span>Human</span>
-            </span>
-          </template>
-          <div class="bottom-container">
-            <div class="tree-container">
-              <el-tree
-                  class="filter-tree"
-                  :data="humanTreeData"
-                  :props="defaultProps"
-                  default-expand-all
-              />
-            </div>
+      <div class="product_nav">
+        <div class="nav_item" v-for="item in productNav">
+          <div class="bg"><img :src="item.bg" alt="" /></div>
+          <div class="box">
+            <div class="icon"><img :src="item.icon" alt="" /></div>
+            <div class="line"></div>
+            <div class="title">{{ item.title }}</div>
           </div>
-        </el-tab-pane>
-        <el-tab-pane>
-          <template #label>
-            <span class="custom-tabs-label">
-              <i class="iconfont icon-shijieyeshengdongwuri"></i>
-              <span>Animal models </span>
-            </span>
-          </template>
-          <el-tree
-              style="max-width: 600px"
-              class="filter-tree"
-              :data="animalTreeData"
-              :props="defaultProps"
-              default-expand-all
-          />
-        </el-tab-pane>
-      </el-tabs>-->
-    </div>
-    <div class="data-statistics common-section">
-      <h3>Data Statistics</h3>
-      <div class="echarts-container">
-        <home-echarts :sortType="'Human'"></home-echarts>
-        <home-echarts :sortType="'Animal models'"></home-echarts>
+        </div>
       </div>
     </div>
-    <div class="news-section common-section">
-      <h3>News</h3>
-      <div class="news-container">
-        <div class="news-item"> </div>
+  </div>
+  <div class="about_us">
+    <div class="about_us_inner common">
+      <div class="left">
+        <!-- <div class="bg"><img src="../assets/Tcuni.png" alt="" /></div> -->
+        <div class="commtitle">
+          <div class="en">About Us <img src="../assets/0.png" alt="" /></div>
+        </div>
+        <div class="text">{{ aboutCompany.text }}</div>
+        <div class="more">查看详情+</div>
+      </div>
+      <img class="rightimg" :src="aboutCompany.bg" alt="" />
+    </div>
+  </div>
+  <div class="cooperation">
+    <div class="content common">
+      <div class="commtitle">
+        <div class="en">Cooperation <img src="../assets/0.png" alt="" /></div>
+      </div>
+      <div class="swiper_ouner">
+        <swiper
+          :modules="modules"
+          :loop="true"
+          :slides-per-view="slidesPerView"
+          :space-between="50"
+          :autoplay="{ delay: 3000, disableOnInteraction: false }"
+          :navigation="navigation"
+          :pagination="{ clickable: false, hideOnClick: true }"
+          :scrollbar="{ draggable: false }"
+          class="swiperBox"
+          @slideChange="onSlideChange"
+        >
+          <template v-for="(item, index) in cooperationList" :key="index">
+            <swiper-slide>
+              <div class="swiper_inner">
+                <div class="img"><img :src="item.img" alt="" /></div>
+                <div class="text">{{ item.cn }}</div>
+              </div>
+            </swiper-slide>
+          </template>
+          <div class="swiper-button-prev" @click.stop="prevEl"></div>
+          <div class="swiper-button-next" @click.stop="nextEl"></div>
+        </swiper>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import {ref,onMounted,onUnmounted} from "vue";
-import HomeEcharts from "../components/common/HomeEcharts.vue";
-import myImage from '../assets/fenzi.png'
-import myImage2 from '../assets/fei.png'
-import myImage3 from '../assets/xianliti.png'
-import myImage4 from '../assets/fenzi.png'
-const introduction = ref(`Welcome to our Lung Multi-Omics Database (LMOD), an initiative meticulously curated by Laboratory of Pulmonary Immunology and Inflammation,
-Frontiers Science Center for Disease-related Molecular Network, West China Hospital, Sichuan University. Our repository is dedicated to the advancement of understanding in pulmonary immunology and inflammatory processes.
-The scope of our investigative pursuits encompasses the 1) intricate phenomena of pulmonary senescence, 2) the pathophysiological intricacies of Interstitial Lung Disease (ILD) as well as Chronic Obstructive Pulmonary Disease (COPD), 3)
-dovetailing into the pivotal role of mitochondrial function within the pulmonary milieu.
-This compendium serves as a platform to disseminate our research insights and to amalgamate a wealth of multi-omic datasets pertinent to lung health and disease. We invite the academic community to collaborate and utilize our database,
-accessible through a seamless download interface. We are receptive to intellectual discourse and welcome any inquiries or propositions for the enhancement of this knowledge base.
-`)
-const images = ref([myImage,myImage2,myImage3,myImage4])
-interface Tree {
-  [key: string]: any
-}
-const defaultProps = {
-  children: 'children',
-  label: 'label',
-}
-const humanTreeData: Tree[] = [
-  {
-    id: 1,
-    label: 'Health(1000)',
-    children: [
-      {
-        id: 4,
-        label: 'Aging(1000)',
-        children: [
-          {
-            id: 9,
-            label: 'Young(310)',
-          },
-          {
-            id: 10,
-            label: 'Middle-aged(300)',
-          },
-          {
-            id: 11,
-            label: 'Old(390)',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    label: 'Disease(900)',
-    children: [
-      {
-        id: 5,
-        label: 'ILAD(300)',
-      },
-      {
-        id: 6,
-        label: 'ILD(300)',
-        children: [
-          {
-            id: 9,
-            label: 'myositis-ILD(310)',
-          },
-          {
-            id: 10,
-            label: 'ssc-ILD(300)',
-          },
-          {
-            id: 11,
-            label: 'rare-ILD(390)',
-          },
-        ]
-      },
-      {
-        id: 7,
-        label: 'IPF(300)',
-      },
-      {
-        id: 8,
-        label: 'Sarcoidosis(300)',
-      },
-      {
-        id: 9,
-        label: 'Other_diseases(300)',
-      },
-    ],
-  },
-]
-const animalTreeData: Tree[] = [
-  {
-    id: 1,
-    label: 'Mouse(1000)',
-    children: [
-      {
-        id: 4,
-        label: 'Mouse cre-geneA(1000)',
-      },
-      {
-        id: 4,
-        label: 'Mouse si-geneB(1000)',
-      },
-      {
-        id: 4,
-        label: 'BLM mouse(1000)',
-      },
-      {
-        id: 4,
-        label: 'Low-oxygen mouse(1000)',
-        children: [
-          {
-            id: 9,
-            label: 'Blood(310)',
-          },
-          {
-            id: 10,
-            label: 'Lung(300)',
-          },
-          {
-            id: 11,
-            label: 'X cellline knock geneC(390)',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    label: 'Monkey(900)',
-    children: [
-      {
-        id: 6,
-        label: 'Aging(300)',
-        children: [
-          {
-            id: 9,
-            label: 'Young(310)',
-          },
-          {
-            id: 10,
-            label: 'Middle-aged(300)',
-          },
-          {
-            id: 11,
-            label: 'Old(390)',
-          },
-        ]
-      },
-      {
-        id: 7,
-        label: 'Pig(300)',
-      },
-    ],
-  },
-]
-const handleResize = () => {
-  (document as any).getElementById('images').style.height = `${(document as any).getElementById('introduction').clientHeight}px`
-}
-onMounted(() => {
-  (document as any).getElementById('images').style.height = `${(document as any).getElementById('introduction').clientHeight}px`
-  window.addEventListener('resize', handleResize);
+import Carousel from "../components/common/ElCarousel.vue";
+import transImg from "../assets/Carousel.jpg";
+import {
+  seviceNav,
+  productNav,
+  aboutCompany,
+  cooperationList,
+} from "../utils/alldata";
+import { ref, onMounted } from "vue";
+// import SwiperComponent from "../components/common/SwiperComponent.vue";
+const transImgs = ref([transImg]);
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css/pagination"; // 轮播图底面的小圆点
+import "swiper/css/navigation"; // 轮播图两边的左右箭头
+import { Autoplay, Pagination, Navigation, Scrollbar } from "swiper/modules";
+const slidesPerView = ref(6);
+const navigation = ref({
+  nextEl: ".swiper-button-next",
+  prevEl: ".swiper-button-prev",
 });
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+// 在modules加入要使用的模块
+const modules = [Autoplay, Pagination, Navigation, Scrollbar];
+const prevEl = () => {
+  // console.log('上一张' + index + item)
+};
+const nextEl = () => {
+  // console.log('下一张')
+};
+// 更改当前活动swiper
+const onSlideChange = () => {};
+const handleResize = () => {
+  if (window.innerWidth >= 1360) {
+    slidesPerView.value = 6;
+  } else if (window.innerWidth >= 1024 && window.innerWidth < 1360) {
+    slidesPerView.value = 5;
+  } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+    slidesPerView.value = 4;
+  } else if (window.innerWidth < 768) {
+    slidesPerView.value = 3;
+  }
+};
+onMounted(() => {
+  handleResize();
+  console.log(22, transImgs.value);
 });
 </script>
 <style scoped lang="scss">
-@mixin layout($align,$justify){
-  display: flex;
-  align-items: $align;
-  justify-content: $justify;
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
 }
-@mixin max-width(){
-  width: 80%;
-  max-width: 1920px;
-  margin: 0 auto;
-}
-.container{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  .common-section{
-    padding-top: 50px;
-    text-align: left;
+.service {
+  position: relative;
+  isolation: isolate;
+  height: auto;
+  padding-bottom: 50px;
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: url(../assets/ServiceBg.jpg);
+    background-size: 100% 100%;
+    opacity: 0.7;
+    overflow: hidden;
+    z-index: -1;
   }
-  .basic-info{
-    @include layout(flex-start,space-between);
-    .about{
-      width: 60%;
-      text-align: left;
-      .content{
-        font-size: 18px;
-      }
-      h3{
-        margin-top: 0px;
-      }
-    }
-    .right-side{
-      width: 30%;
-      margin-top: 75px;
-      @include layout('',flex-end);
-      .images{
-        width: 85%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        border-radius: 5px;
-        img {
-          aspect-ratio: 1.5;
-          object-fit: cover;
-          border-radius: 5px;
-          height: calc(50% - 5px);
-          max-width: calc(50% - 5px);
-          &:nth-child(odd) {
-            margin-right: 10px;
-          }
-          &:nth-child(3), &:nth-child(4) {
-            margin-top: 10px;
-          }
-        }
-      }
-    }
-  }
-  .sort-section{
-    .custom-tabs{
-      @include layout(flex-start,space-between);
-      box-shadow: 1px 2px 15px 1px #7979791a;
-      border-radius: 5px;
-      .single{
-        width: calc(50% - 1px);
-        padding: 15px 20px;
-        box-sizing: border-box;
-        border-right: 1px solid #bbbbbb2e;
-        .custom-tabs-label{
-          font-size: 22px;
-          padding-bottom: 10px;
-          .iconfont{
-            margin-right: 10px;
-            font-size: 22px;
-          }
-          span{
-            font-weight: bold;
-          }
-        }
-        &:last-child{
-          border-right: none;
-        }
-      }
-    }
-  }
-  .data-statistics{
-    .echarts-container{
-      @include layout(center,space-between);
+  .content {
+    visibility: visible;
+    animation: fadeInUp 0.5s ease-in-out;
+    .service_nav {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #f5f5f566;
-      //box-shadow: 1px 5px 15px 1px rgba(0, 0, 0, 0.1019607843);
-      border-radius: 5px;
+      gap: 2.5%;
+      text-align: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 60px 30px 0;
+      .nav_item {
+        display: block;
+        color: #838383;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 0 20px #eee;
+        flex: 1;
+        transition: 0.5s;
+        cursor: pointer;
+        .icon {
+          height: 88px;
+          padding-top: 36px;
+        }
+        .title {
+          height: 40px;
+          font-weight: bold;
+          font-size: 22px;
+          color: #54a5d4;
+        }
+        .cont {
+          padding: 20px 8% 40px;
+          height: 150px;
+          font-size: 15px;
+          line-height: 2;
+          overflow: hidden;
+        }
+        .icon_hover {
+          padding-bottom: 29px;
+          font-size: 36px;
+        }
+        &:nth-child(even) {
+          margin-top: 35px;
+        }
+        &:nth-child(1) .icon_hover {
+          color: #54a5d4;
+        }
+        &:nth-child(2) .icon_hover {
+          color: #eb6d82;
+        }
+        &:nth-child(3) .icon_hover {
+          color: #3e629c;
+        }
+        &:nth-child(4) .icon_hover {
+          color: #2d94b7;
+        }
+        &:hover {
+          transform: translateY(-3px);
+        }
+      }
+    }
+  }
+}
+.product {
+  width: 100%;
+  padding-bottom: 4rem;
+  .content {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 30px;
+    .product_nav {
+      margin-top: 46px;
+      /* display: grid;
+      gap: 3.67%;
+      grid-template-columns: 1fr 1fr 1fr; */
+      display: flex;
+      .nav_item {
+        width: calc(100% / 3);
+        box-shadow: 0 0 20px #eee;
+        border-radius: 12px;
+        position: relative;
+        margin-right: 2.2rem;
+        padding: 1.5rem;
+        .bg {
+          width: 100%;
+          img {
+            width: 100%;
+          }
+        }
+        .box {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 25%;
+          transform: translateX(-50%);
+          color: white;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .icon {
+            width: 100%;
+            aspect-ratio: 1;
+            background-size: cover;
+            background-position: center;
+            img {
+              width: 90%;
+            }
+          }
+          .line {
+            width: 20px;
+            height: 2px;
+            margin: 0 auto;
+            background: #ffffff;
+          }
+          .title {
+            font-size: 1.2rem;
+          }
+        }
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+.about_us {
+  width: 100%;
+  padding: 70px 0;
+  .about_us_inner {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    .left {
+      /*       text-align: left;
+      position: relative;
+      isolation: isolate;
+      aspect-ratio: 1.5;
+      width: calc(50% - 20px); */
+      text-align: left;
+      background: url(/src/assets/Tcuni.png) right bottom no-repeat;
+      .bg {
+        position: absolute;
+        width: 75%;
+        height: 35%;
+        right: 0;
+        bottom: 0;
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+        /*         background: url(/src/assets/Tcuni.png);
+        background-size: 100% 100%;
+        opacity: 0.7;
+        overflow: hidden;
+        z-index: -1; */
+      }
+      .commtitle {
+        padding-top: 0 !important;
+      }
+      .text {
+        font-size: 15px;
+        line-height: 2;
+        color: #848484;
+        padding-top: 8px;
+        // margin-right: 15.3%;
+      }
+      .more {
+        margin-top: 65px;
+        display: block;
+        width: 148px;
+        line-height: 48px;
+        text-align: center;
+        border: 1px solid #54a5d4;
+        font-size: 15px;
+        color: #54a5d4;
+        transition: 0.5s;
+      }
+    }
+    .rightimg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+  }
+}
+.cooperation {
+  display: flex;
+  justify-content: center;
+  .content {
+    max-width: 1360px;
+    width: 100%;
+    .swiper_ouner {
+      width: 100%;
+      height: 250px;
+      padding: 50px 0;
+      .swiper_inner {
+        .img {
+          width: 100%;
+          height: 110px;
+          img {
+            width: 100px;
+            height: auto;
+          }
+        }
+        .text {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+.common {
+  .commtitle {
+    padding-top: 70px;
+    .en {
+      font-size: 40px;
+      color: #54a5d4;
+      font-weight: bold;
+      height: 50px;
+      line-height: 30px;
+      img {
+        position: relative;
+        top: -15px;
+      }
+    }
+    .cn {
+      font-size: 32px;
+      color: #838383;
+      padding-top: 18px;
+      font-weight: bold;
+    }
+  }
+}
+:deep .swiper {
+  // overflow: unset !important;
+}
+:deep .swiper-pagination {
+  display: none !important;
+}
+:deep .swiper-button-prev {
+  left: 0 !important;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #9dc1d5;
+  border-radius: 50%;
+  &::after {
+    font-size: 14px !important;
+    color: #9dc1d5;
+  }
+}
+:deep .swiper-button-next {
+  right: 0 !important;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #9dc1d5;
+  border-radius: 50%;
+  &::after {
+    font-size: 14px !important;
+    color: #9dc1d5;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .service_nav {
+    gap: 4% !important;
+    .nav_item {
+      flex: 48% !important;
+    }
+  }
+  .about_us {
+    .about_us_inner {
+      grid-template-columns: unset;
+      .left {
+        width: 100% !important;
+        // aspect-ratio: 2.5 !important;
+        .bg {
+          width: 60% !important;
+          height: 25% !important;
+        }
+      }
+      .rightimg {
+        width: 100% !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .swiper_inner {
+    img {
+      width: 80px !important;
+    }
+  }
+}
+@media screen and (max-width: 550px) {
+  .service_nav {
+    gap: 4% !important;
+    .nav_item {
+      flex: 100% !important;
+      margin-top: 30px !important;
+      position: relative;
+      background: linear-gradient(
+        139.13deg,
+        #ffffffc9,
+        #8bb3cb24 99.36%
+      ) !important;
+      .icon {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translate(0, -50%);
+        z-index: -1;
+        opacity: .7;
+        img {
+          width: 140%;
+        }
+      }
+      .title {
+        text-align: left;
+        padding: 20px 20px 0;
+      }
+      .cont {
+        padding: 0 5% 20px !important;
+        height: auto !important;
+        text-align: left;
+        width: 80%;
+        line-height: 1.6 !important;
+        color: #272727
+      }
+      .icon_hover {
+        display: none;
+      }
     }
   }
 }
