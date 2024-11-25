@@ -95,7 +95,7 @@ const transImgs = ref([transImg]);
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css/pagination"; // 轮播图底面的小圆点
 import "swiper/css/navigation"; // 轮播图两边的左右箭头
-import { Autoplay, Pagination, Navigation, Scrollbar } from "swiper/modules";
+import { Autoplay, Pagination, Navigation, Scrollbar } from "swiper";
 const slidesPerView = ref(6);
 const navigation = ref({
   nextEl: ".swiper-button-next",

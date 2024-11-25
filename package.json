@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 192.168.3.88 --port 8080",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.7.7",
     "echarts": "^5.5.1",
     "element-plus": "^2.8.1",

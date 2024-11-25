@@ -27,7 +27,36 @@ const router = createRouter({
                     path: '/service',
                     name: 'ServicePage',
                     meta:{title:"技术服务"},
-                    component: () => import('../views/ServicePage.vue')
+                    component: () => import('../views/ServicePage.vue'),
+                    redirect: {
+                        name: 'CaptureSequencing'
+                    },
+                    children:[
+                        {
+                            path: '/service/capture-sequencing',
+                            name: 'CaptureSequencing', 
+                            meta:{title:"捕获测序"},
+                            component: () => import('../components/service-page/CaptureSequencing.vue')
+                        },
+                        {
+                            path: '/service/resequencing-page',
+                            name: 'ResequencingPage', 
+                            meta:{title:"重测序"},
+                            component: () => import('../components/service-page/ResequencingPage.vue')
+                        },
+                        {
+                            path: '/service/transcriptome-sequencing',
+                            name: 'TranscriptomeSequencing', 
+                            meta:{title:"转录组测序"},
+                            component: () => import('../components/service-page/TranscriptomeSequencing.vue')
+                        },
+                        {
+                            path: '/service/data-service',
+                            name: 'DataService', 
+                            meta:{title:"数据服务"},
+                            component: () => import('../components/service-page/DataService.vue')
+                        }
+                    ]
                 },
                 {
                     path: '/product',
@@ -62,7 +91,30 @@ const router = createRouter({
                     path: '/resource',
                     name: 'ResourcePage',
                     meta:{title:"客户解答"},
-                    component: () => import('../views/ResourcePage.vue')
+                    component: () => import('../views/ResourcePage.vue'),
+                    redirect: {
+                        name: 'SampleRequirements'
+                    },
+                    children:[
+                        {
+                            path: '/resource/sample-requirements',
+                            name: 'SampleRequirements',
+                            meta:{title:"送样要求"},
+                            component: () => import('../components/resource-page/SampleRequirements.vue')
+                        },
+                        {
+                            path: '/resource/problem-solving',
+                            name: 'ProblemSolving',
+                            meta:{title:"问题解答"},
+                            component: () => import('../components/resource-page/ProblemSolving.vue')
+                        },
+                        {
+                            path: '/resource/resource-download',
+                            name: 'ResourceDownload',
+                            meta:{title:"资料下载"},
+                            component: () => import('../components/resource-page/ResourceDownload.vue')
+                        },
+                    ]
                 },
                 {
                     path: '/about',

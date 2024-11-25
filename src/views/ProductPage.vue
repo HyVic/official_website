@@ -23,21 +23,21 @@ const active = ref(0);
 const productNav = ref([
   {
     id: 0,
-    name: "作物",
+    name: "Crop",
     icon: "icon-zhiwu4",
     route: "CropPage",
     label: "crop",
   },
   {
     id: 1,
-    name: "动物",
+    name: "Animal",
     icon: "icon-animal",
     route: "AnimalPage",
     label: "animal",
   },
   {
     id: 2,
-    name: "定制",
+    name: "Customized",
     icon: "icon-dingzhijiaju",
     route: "CustomizedPage",
     label: "customized",
@@ -73,6 +73,7 @@ watchEffect(() => {
 <style scoped lang="scss">
 .product_page {
   width: 100%;
+  display: flex;
   img {
     width: 100%;
     aspect-ratio: 2;
@@ -83,7 +84,7 @@ watchEffect(() => {
 }
 .product_nav {
   width: 100%;
-  height: 80px;
+  height: 100px;
   background-color: #fbfbfb;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1019607843);
   position: sticky;
@@ -104,7 +105,7 @@ watchEffect(() => {
     cursor: pointer;
     transition: 0.3s;
     .iconfont {
-      font-size: 30px;
+      font-size: 1.8rem;
     }
     span {
       font-size: 18px;
